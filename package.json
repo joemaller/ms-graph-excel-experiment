@@ -1,0 +1,18 @@
+{
+  "name": "ms-console-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+    "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/msal-node": "^2.5.1",
+    "axios": "^1.6.1",
+    "dotenv": "^16.3.1",
+    "yargs": "^17.7.2"
+  }
+}
