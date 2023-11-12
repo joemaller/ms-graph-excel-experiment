@@ -32,9 +32,10 @@ async function main() {
         const users = await fetch.callApi(`${apiBase}/users`, accessToken);
         result = users.value
           .filter((u) => !u.userPrincipalName.includes("#EXT#"))
-          .map(({ displayName, userPrincipalName }) => ({
+          .map(({ displayName, id, userPrincipalName }) => ({
             displayName,
             userPrincipalName,
+            id,
           }));
         break;
 
