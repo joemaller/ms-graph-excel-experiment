@@ -1,4 +1,4 @@
-const msal = require('@azure/msal-node');
+const msal = require("@azure/msal-node");
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
@@ -6,11 +6,11 @@ const msal = require('@azure/msal-node');
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/configuration.md
  */
 const msalConfig = {
-    auth: {
-        clientId: process.env.CLIENT_ID,
-        authority: process.env.AAD_ENDPOINT + '/' + process.env.TENANT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-    }
+  auth: {
+    clientId: process.env.CLIENT_ID,
+    authority: process.env.AAD_ENDPOINT + "/" + process.env.TENANT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+  },
 };
 
 /**
@@ -19,11 +19,11 @@ const msalConfig = {
  * https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
  */
 const tokenRequest = {
-    scopes: [process.env.GRAPH_ENDPOINT + '/.default'],
+  scopes: [process.env.GRAPH_ENDPOINT + "/.default"],
 };
 
 const apiConfig = {
-    uri: process.env.GRAPH_ENDPOINT + '/v1.0/users',
+  uri: process.env.GRAPH_ENDPOINT + "/v1.0/users",
 };
 
 /**
@@ -37,11 +37,11 @@ const cca = new msal.ConfidentialClientApplication(msalConfig);
  * @param {object} tokenRequest
  */
 async function getToken(tokenRequest) {
-    return await cca.acquireTokenByClientCredential(tokenRequest);
+  return await cca.acquireTokenByClientCredential(tokenRequest);
 }
 
 module.exports = {
-    apiConfig: apiConfig,
-    tokenRequest: tokenRequest,
-    getToken: getToken
+  apiConfig: apiConfig,
+  tokenRequest: tokenRequest,
+  getToken: getToken,
 };

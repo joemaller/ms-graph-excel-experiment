@@ -1,4 +1,3 @@
-
 /**
  * Calls the endpoint with authorization bearer token.
  * @param {string} endpoint
