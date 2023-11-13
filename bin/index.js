@@ -12,15 +12,52 @@ const options = yargs.usage("Usage: --op <operation_name>").option("op", {
   alias: "operation",
   describe: "operation name",
   type: "string",
-  choices: ["getUsers", "getUser", "getDrive", "getDriveChildren", "getSheet"],
+  choices: [
+    "getUsers",
+    "getUser",
+    "getDrive",
+    "getDriveChildren",
+    "getSheetId",
+    "getRows",
+    "appendRows",
+  ],
   demandOption: true,
 }).argv;
+
+/**
+ * TODO: Move these into modules
+ * @var date {Date} a date object, usually NOW
+ */
+const excelDate = (date) => {
+  if (!date) {
+    date = new Date();
+  }
+  date.setHours(0, 0, 0, 0); // set time to midnight
+  zeroDay = new Date(1900, 0, 0);
+  return (date - zeroDay) / (24 * 60 * 60 * 1000) + 1;
+};
+
+const excelTime = (date) => {
+  if (!date) {
+    date = new Date();
+  }
+  const midnight = new Date();
+  midnight.setHours(0, 0, 0, 0);
+
+  // NOTE: Excel rounds floating point values to 15 decimal places. JS sends a 16-digit floating point number
+  return (date - midnight) / 86400000; // 24 hours * 60 minutes * 60 seconds * 1000 (ms)
+};
 
 const apiBase = process.env.GRAPH_ENDPOINT + "/v1.0";
 async function main() {
   console.log(`You have selected: ${options.op}`, options);
 
-  let result, driveId;
+  let result;
+
+  let driveId =
+    "b!tOvj5m3TxUuAQeyG1BWmJyPUbJ5L1slOqVB4aPdgGD2qfEMY5ue0R6EVDM71kgjB"; // iop@ideasonpurpose.com's OneDrive
+
+  let sheetId = "01GEOOIVICYY5OWOVHEFHIGXW7WTF5JEFI"; // IOP/IOP021_ BNB/Brand New Brand! Cycle 5/a_Mangement/Contact Form Test Sheet.xlsx
 
   // here we get an access token
   const authResponse = await auth.getToken(auth.tokenRequest);
@@ -55,9 +92,6 @@ async function main() {
         break;
 
       case "getDriveChildren":
-        driveId =
-          "b!tOvj5m3TxUuAQeyG1BWmJyPUbJ5L1slOqVB4aPdgGD2qfEMY5ue0R6EVDM71kgjB";
-
         // const itemPath = 'Active Jobs';
         const itemPath =
           "Active Jobs/IOP/IOP021_ BNB/Brand New Brand! Cycle 5/a_Mangement";
@@ -75,16 +109,45 @@ async function main() {
         );
         break;
 
-      case "getSheet":
-        driveId =
-          "b!tOvj5m3TxUuAQeyG1BWmJyPUbJ5L1slOqVB4aPdgGD2qfEMY5ue0R6EVDM71kgjB";
-
+      case "getSheetId":
         const filePath =
           "Active Jobs/IOP/IOP021_ BNB/Brand New Brand! Cycle 5/a_Mangement";
         const fileName = "Contact Form Test Sheet.xlsx";
         result = await fetch.callApi(
           `${apiBase}/drives/${driveId}/root:/${filePath}/${fileName}`,
           accessToken
+        );
+        console.log({ id: result.id });
+        break;
+
+      case "getRows":
+        result = await fetch.callApi(
+          `${apiBase}/drives/${driveId}/items/${sheetId}/workbook/worksheets/Sheet1/tables/Table1/rows`,
+          accessToken
+        );
+
+        if (result.value.length) {
+          result = result.value.map((r) => r.values);
+        }
+
+        break;
+
+      case "appendRows":
+        // TODO: Dates should be converted from the actual request timestamp
+        const values = [
+          [
+            excelDate(),
+            excelTime(),
+            "name from API",
+            "email@api.go",
+            new Date(),
+          ],
+        ];
+        result = await fetch.callApi(
+          `${apiBase}/drives/${driveId}/items/${sheetId}/workbook/worksheets/Sheet1/tables/Table1/rows`,
+          accessToken,
+          "POST",
+          JSON.stringify({ values })
         );
         break;
 
