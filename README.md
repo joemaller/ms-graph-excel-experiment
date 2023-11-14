@@ -18,7 +18,7 @@ Ultimately, all I want to do is append a row to this Excel file, on OneDrive: [*
 Additional stuff: 
 - [x] Replace Axios with native Fetch API
 - [x] Actual API error messages 
-- [ ] Convert to ES Modules
+- [x] Convert to ES Modules
 
 
 ## References and things to followup on

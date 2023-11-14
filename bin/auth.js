@@ -1,4 +1,5 @@
-const msal = require("@azure/msal-node");
+// const msal = require("@azure/msal-node");
+import * as msal from "@azure/msal-node"
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
@@ -18,11 +19,11 @@ const msalConfig = {
  * The scope is always in the format '<resource>/.default'. For more, visit:
  * https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
  */
-const tokenRequest = {
+export const tokenRequest = {
   scopes: [process.env.GRAPH_ENDPOINT + "/.default"],
 };
 
-const apiConfig = {
+export const apiConfig = {
   uri: process.env.GRAPH_ENDPOINT + "/v1.0/users",
 };
 
@@ -36,12 +37,12 @@ const cca = new msal.ConfidentialClientApplication(msalConfig);
  * Acquires token with client credentials.
  * @param {object} tokenRequest
  */
-async function getToken(tokenRequest) {
+export async function getToken(tokenRequest) {
   return await cca.acquireTokenByClientCredential(tokenRequest);
 }
 
-module.exports = {
-  apiConfig: apiConfig,
-  tokenRequest: tokenRequest,
-  getToken: getToken,
-};
+// module.exports = {
+//   apiConfig: apiConfig,
+//   tokenRequest: tokenRequest,
+//   getToken: getToken,
+// };

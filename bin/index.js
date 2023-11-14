@@ -1,28 +1,34 @@
 #!/usr/bin/env node
 
 // read in env settings
-require("dotenv").config();
+import "dotenv/config";
 
-const yargs = require("yargs");
+// const yargs = require("yargs");
+import yargs from "yargs";
+import { hideBin } from 'yargs/helpers'
 
-const fetch = require("./fetch");
-const auth = require("./auth");
+// const fetch = require("./fetch");
+import * as fetch from "./fetch.js";
+// const auth = require("./auth");
+import * as auth from "./auth.js";
 
-const options = yargs.usage("Usage: --op <operation_name>").option("op", {
-  alias: "operation",
-  describe: "operation name",
-  type: "string",
-  choices: [
-    "getUsers",
-    "getUser",
-    "getDrive",
-    "getDriveChildren",
-    "getSheetId",
-    "getRows",
-    "appendRows",
-  ],
-  demandOption: true,
-}).argv;
+const options = yargs(hideBin(process.argv))
+  .usage("Usage: --op <operation_name>")
+  .option("op", {
+    alias: "operation",
+    describe: "operation name",
+    type: "string",
+    choices: [
+      "getUsers",
+      "getUser",
+      "getDrive",
+      "getDriveChildren",
+      "getSheetId",
+      "getRows",
+      "appendRows",
+    ],
+    demandOption: true,
+  }).argv;
 
 /**
  * TODO: Move these into modules
@@ -33,7 +39,7 @@ const excelDate = (date) => {
     date = new Date();
   }
   date.setHours(0, 0, 0, 0); // set time to midnight
-  zeroDay = new Date(1900, 0, 0);
+  const zeroDay = new Date(1900, 0, 0);
   return (date - zeroDay) / (24 * 60 * 60 * 1000) + 1;
 };
 
@@ -64,7 +70,7 @@ async function main() {
   const { accessToken } = authResponse;
 
   try {
-    switch (yargs.argv["op"]) {
+    switch (options.op) {
       case "getUsers":
         const users = await fetch.callApi(`${apiBase}/users`, accessToken);
         result = users.value
@@ -139,7 +145,7 @@ async function main() {
             excelDate(),
             excelTime(),
             "name from API",
-            "email@api.go",
+            "email@example.com",
             new Date(),
           ],
         ];

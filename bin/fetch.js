@@ -3,7 +3,7 @@
  * @param {string} endpoint
  * @param {string} accessToken
  */
-async function callApi(endpoint, accessToken, method = "GET", body) {
+export async function callApi(endpoint, accessToken, method = "GET", body) {
   const options = {
     method,
     headers: {
@@ -27,6 +27,6 @@ async function callApi(endpoint, accessToken, method = "GET", body) {
   }
 }
 
-module.exports = {
-  callApi: callApi,
-};
+// module.exports = {
+//   callApi: callApi,
+// };
