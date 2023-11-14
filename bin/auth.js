@@ -1,5 +1,4 @@
-// const msal = require("@azure/msal-node");
-import * as msal from "@azure/msal-node"
+import * as msal from "@azure/msal-node";
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
@@ -40,9 +39,3 @@ const cca = new msal.ConfidentialClientApplication(msalConfig);
 export async function getToken(tokenRequest) {
   return await cca.acquireTokenByClientCredential(tokenRequest);
 }
-
-// module.exports = {
-//   apiConfig: apiConfig,
-//   tokenRequest: tokenRequest,
-//   getToken: getToken,
-// };

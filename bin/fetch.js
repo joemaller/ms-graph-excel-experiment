@@ -9,7 +9,7 @@ export async function callApi(endpoint, accessToken, method = "GET", body) {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    body
+    body,
   };
 
   if (method === "POST") {
@@ -26,7 +26,3 @@ export async function callApi(endpoint, accessToken, method = "GET", body) {
     return error;
   }
 }
-
-// module.exports = {
-//   callApi: callApi,
-// };

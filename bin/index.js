@@ -1,15 +1,11 @@
 #!/usr/bin/env node
 
-// read in env settings
 import "dotenv/config";
 
-// const yargs = require("yargs");
 import yargs from "yargs";
-import { hideBin } from 'yargs/helpers'
+import { hideBin } from "yargs/helpers";
 
-// const fetch = require("./fetch");
 import * as fetch from "./fetch.js";
-// const auth = require("./auth");
 import * as auth from "./auth.js";
 
 const options = yargs(hideBin(process.argv))
