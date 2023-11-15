@@ -20,7 +20,12 @@ export async function callApi(endpoint, accessToken, method = "GET", body) {
 
   try {
     const response = await fetch(endpoint, options);
-    return await response.json();
+    console.log(response.headers);
+    if (response.status === 202) {
+      return await response.status;
+    } else {
+      return await response.json();
+    }
   } catch (error) {
     console.log(error);
     return error;

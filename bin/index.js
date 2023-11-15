@@ -22,6 +22,7 @@ const options = yargs(hideBin(process.argv))
       "getSheetId",
       "getRows",
       "appendRows",
+      "sendMail",
     ],
     demandOption: true,
   }).argv;
@@ -150,6 +151,43 @@ async function main() {
           accessToken,
           "POST",
           JSON.stringify({ values })
+        );
+        break;
+
+      case "sendMail":
+        const sendMail = {
+          message: {
+            subject: "Test email from API: " + new Date(),
+            body: {
+              contentType: "Text",
+              content: "fake email content goes here: " + new Date(),
+            },
+            toRecipients: [
+              {
+                emailAddress: {
+                  address: "joe@ideasonpurpose.com",
+                },
+              },
+            ],
+            replyTo: [
+              {
+                emailAddress: {
+                  name: "IOP Bot Army",
+                  address: "no-reply@ideasonpurpose.com",
+                },
+              },
+            ],
+          },
+          saveToSentItems: "false",
+        };
+
+        const sendUser = options._[0] ?? "iop@ideasonpurpose.com";
+
+        result = await fetch.callApi(
+          `${apiBase}/users/${sendUser}/sendMail`,
+          accessToken,
+          "POST",
+          JSON.stringify(sendMail)
         );
         break;
 
